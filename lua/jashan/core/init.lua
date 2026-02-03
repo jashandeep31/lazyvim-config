@@ -1,5 +1,6 @@
 require("jashan.core.options")
 require("jashan.core.keymaps")
+require("jashan.core.lsp-keymaps")
 
 vim.diagnostic.config({
 	virtual_text = {
