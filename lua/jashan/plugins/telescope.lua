@@ -10,9 +10,21 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
     local transform_mod = require("telescope.actions.mt").transform_mod
     local trouble = require("trouble")
     local trouble_telescope = require("trouble.sources.telescope")
+
+    local function select_tab_drop(prompt_bufnr)
+      actions.close(prompt_bufnr)
+      local selection = action_state.get_selected_entry()
+      if selection then
+        local path = selection.path or selection.filename
+        if path then
+          vim.cmd("tab drop " .. vim.fn.fnameescape(path))
+        end
+      end
+    end
 
     local custom_actions = transform_mod({
       open_trouble_qflist = function()
@@ -30,7 +42,7 @@ return {
             ["<C-j>"] = actions.move_selection_next,
             ["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
             ["<C-t>"] = trouble_telescope.open,
-            ["<CR>"] = actions.select_tab,
+            ["<CR>"] = select_tab_drop,
           },
         },
       },

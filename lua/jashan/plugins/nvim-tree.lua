@@ -19,7 +19,18 @@ return {
       api.config.mappings.default_on_attach(bufnr)
 
       -- custom mappings
-      vim.keymap.set('n', '<CR>', api.node.open.tab, opts('Open: New Tab'))
+      local function tab_drop()
+        local node = api.tree.get_node_under_cursor()
+        if node then
+          if node.type == "file" then
+            vim.cmd("tab drop " .. vim.fn.fnameescape(node.absolute_path))
+          else
+            api.node.open.edit()
+          end
+        end
+      end
+
+      vim.keymap.set("n", "<CR>", tab_drop, opts("Open: Tab Drop"))
     end
 
     nvimtree.setup({
