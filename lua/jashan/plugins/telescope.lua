@@ -24,6 +24,9 @@ return {
 
     telescope.setup({
       defaults = {
+        preview = {
+            treesitter = false,
+        },
         path_display = { "smart" },
         mappings = {
           i = {
@@ -35,7 +38,7 @@ return {
         },
       },
     })
-
+ 
     telescope.load_extension("fzf")
 
     -- set keymaps

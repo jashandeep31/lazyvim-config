@@ -12,7 +12,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 
-require("lazy").setup("jashan.plugins", {
+require("lazy").setup({
+  { import = "jashan.plugins" },
+}, {
   checker = {
     enabled = true,
     notify = false,
