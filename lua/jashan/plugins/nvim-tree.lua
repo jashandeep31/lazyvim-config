@@ -26,6 +26,7 @@ return {
             },
           },
         },
+        group_empty = true,
       },
       -- disable window_picker for
       -- explorer to work well with
@@ -42,6 +43,15 @@ return {
       },
       git = {
         ignore = false,
+      },
+      -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
+      update_focused_file = {
+        enable = true,
+        update_root = false,
+      },
+      -- configuration for the live filtering feature
+      live_filter = {
+        always_show_folders = false,
       },
     })
 
