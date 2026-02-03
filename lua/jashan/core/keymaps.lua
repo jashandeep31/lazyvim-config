@@ -32,8 +32,36 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
-
 -- oo: insert line below, stay in normal mode
-vim.keymap.set("n", "oo", "o<Esc>k", { noremap = true, silent = true })
+keymap.set("n", "oo", "o<Esc>k", { noremap = true, silent = true })
 -- OO: insert line above, stay in normal mode
-vim.keymap.set("n", "OO", "O<Esc>j", { noremap = true, silent = true })
+keymap.set("n", "OO", "O<Esc>j", { noremap = true, silent = true })
+
+-- Diagnostics (errors, warnings, hints)
+keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
+
+-- Errors only
+keymap.set("n", "]e", function()
+	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Next error" })
+
+keymap.set("n", "[e", function()
+	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Prev error" })
+
+-- Warnings only (bonus)
+keymap.set("n", "]w", function()
+	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN })
+end, { desc = "Next warning" })
+
+keymap.set("n", "[w", function()
+	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
+end, { desc = "Prev warning" })
+
+-- to get the signature_help
+keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "Signature help" })
+
+-- move lines up and down
+keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })

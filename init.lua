@@ -1,2 +1,2 @@
- require("jashan.core")
- require("jashan.lazy")
+require("jashan.core")
+require("jashan.lazy")

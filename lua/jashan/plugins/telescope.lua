@@ -11,24 +11,18 @@ return {
     local telescope = require("telescope")
     local actions = require("telescope.actions")
     local transform_mod = require("telescope.actions.mt").transform_mod
-
     local trouble = require("trouble")
     local trouble_telescope = require("trouble.sources.telescope")
 
-    -- or create your custom action
     local custom_actions = transform_mod({
-      open_trouble_qflist = function(prompt_bufnr)
+      open_trouble_qflist = function()
         trouble.toggle("quickfix")
       end,
     })
 
-
-
     telescope.setup({
       defaults = {
-        preview = {
-          treesitter = false,
-        },
+        preview = { treesitter = false },
         path_display = { "smart" },
         mappings = {
           i = {
@@ -41,18 +35,33 @@ return {
       },
     })
 
-
     telescope.load_extension("fzf")
 
-    -- set keymaps
-    local keymap = vim.keymap -- for conciseness
+    local keymap = vim.keymap
 
-    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-    keymap.set("n", "<leader><leader>", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-    keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
-    keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-    keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-    keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
-    keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find todos" })
+    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+    keymap.set("n", "<leader><leader>", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+    keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
+    keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+    keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Grep word under cursor" })
+    keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Todos" })
+    keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
+
+    -- ⭐ .env search
+    keymap.set("n", "<leader>fe", function()
+      require("telescope.builtin").find_files({
+        prompt_title = ".env Files",
+        find_command = {
+          "rg",
+          "--files",
+          "--hidden",
+          "-g",
+          "!.git",
+          "-g",
+          "*.env*",
+        },
+      })
+    end, { desc = "Find .env files" })
+
   end,
 }
