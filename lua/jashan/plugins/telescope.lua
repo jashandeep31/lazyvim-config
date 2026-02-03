@@ -21,7 +21,36 @@ return {
       if selection then
         local path = selection.path or selection.filename
         if path then
-          vim.cmd("tab drop " .. vim.fn.fnameescape(path))
+          local fname = vim.fn.fnameescape(path)
+          
+          -- Check if file is already open in any window
+          local bufnr = vim.fn.bufnr(path)
+          local is_already_open = false
+          if bufnr ~= -1 then
+            local wins = vim.fn.win_findbuf(bufnr)
+            if #wins > 0 then
+              is_already_open = true
+            end
+          end
+
+          if is_already_open then
+            vim.cmd("tab drop " .. fname)
+          else
+            -- Check if current buffer is expendable (empty/unmodified or alpha/dashboard)
+            local cur_buf = vim.api.nvim_get_current_buf()
+            local is_modified = vim.api.nvim_buf_get_option(cur_buf, "modified")
+            local cur_name = vim.api.nvim_buf_get_name(cur_buf)
+            local filetype = vim.api.nvim_buf_get_option(cur_buf, "filetype")
+
+            local is_empty = (cur_name == "" and not is_modified)
+            local is_alpha = (filetype == "alpha" or filetype == "dashboard" or filetype == "starter")
+
+            if is_empty or is_alpha then
+              vim.cmd("edit " .. fname)
+            else
+              vim.cmd("tab drop " .. fname)
+            end
+          end
         end
       end
     end
