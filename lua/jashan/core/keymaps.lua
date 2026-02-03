@@ -32,6 +32,10 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
+-- move through tabs
+keymap.set("n", "H", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
+keymap.set("n", "L", "<cmd>tabn<CR>", { desc = "Go to next tab" })
+
 -- oo: insert line below, stay in normal mode
 keymap.set("n", "oo", "o<Esc>k", { noremap = true, silent = true })
 -- OO: insert line above, stay in normal mode
