@@ -5,6 +5,9 @@ vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 
 vim.keymap.set("i", "jk", "<Esc>", { noremap = true, silent = true })
 -- oo: insert line below, stay in normal mode
-vim.keymap.set("n", "oo", "o<Esc>k", { noremap = true, silent = true })
+vim.keymap.set("n", "oo", "o<Esc>", { noremap = true, silent = true })
 -- OO: insert line above, stay in normal mode
 vim.keymap.set("n", "OO", "O<Esc>j", { noremap = true, silent = true })
+
+-- Disable Shift+J (Join lines)
+vim.keymap.set("n", "J", "<Nop>", { noremap = true, silent = true })
