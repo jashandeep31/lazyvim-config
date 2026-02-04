@@ -1,109 +1,107 @@
 return {
-  "nvim-telescope/telescope.nvim",
-  branch = "0.1.x",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    "nvim-tree/nvim-web-devicons",
-    "folke/todo-comments.nvim",
-  },
-  config = function()
-    local telescope = require("telescope")
-    local actions = require("telescope.actions")
-    local action_state = require("telescope.actions.state")
-    local transform_mod = require("telescope.actions.mt").transform_mod
-    local trouble = require("trouble")
-    local trouble_telescope = require("trouble.sources.telescope")
+	"nvim-telescope/telescope.nvim",
+	branch = "0.1.x",
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		"nvim-tree/nvim-web-devicons",
+		"folke/todo-comments.nvim",
+	},
+	config = function()
+		local telescope = require("telescope")
+		local actions = require("telescope.actions")
+		local action_state = require("telescope.actions.state")
+		local transform_mod = require("telescope.actions.mt").transform_mod
+		local trouble = require("trouble")
+		local trouble_telescope = require("trouble.sources.telescope")
 
-    local function select_tab_drop(prompt_bufnr)
-      actions.close(prompt_bufnr)
-      local selection = action_state.get_selected_entry()
-      if selection then
-        local path = selection.path or selection.filename
-        if path then
-          local fname = vim.fn.fnameescape(path)
-          
-          -- Check if file is already open in any window
-          local bufnr = vim.fn.bufnr(path)
-          local is_already_open = false
-          if bufnr ~= -1 then
-            local wins = vim.fn.win_findbuf(bufnr)
-            if #wins > 0 then
-              is_already_open = true
-            end
-          end
+		local function select_tab_drop(prompt_bufnr)
+			actions.close(prompt_bufnr)
+			local selection = action_state.get_selected_entry()
+			if selection then
+				local path = selection.path or selection.filename
+				if path then
+					local fname = vim.fn.fnameescape(path)
+					-- Check if file is already open in any window
+					local bufnr = vim.fn.bufnr(path)
+					local is_already_open = false
+					if bufnr ~= -1 then
+						local wins = vim.fn.win_findbuf(bufnr)
+						if #wins > 0 then
+							is_already_open = true
+						end
+					end
 
-          if is_already_open then
-            vim.cmd("tab drop " .. fname)
-          else
-            -- Check if current buffer is expendable (empty/unmodified or alpha/dashboard)
-            local cur_buf = vim.api.nvim_get_current_buf()
-            local is_modified = vim.api.nvim_buf_get_option(cur_buf, "modified")
-            local cur_name = vim.api.nvim_buf_get_name(cur_buf)
-            local filetype = vim.api.nvim_buf_get_option(cur_buf, "filetype")
+					if is_already_open then
+						vim.cmd("tab drop " .. fname)
+					else
+						-- Check if current buffer is expendable (empty/unmodified or alpha/dashboard)
+						local cur_buf = vim.api.nvim_get_current_buf()
+						local is_modified = vim.api.nvim_buf_get_option(cur_buf, "modified")
+						local cur_name = vim.api.nvim_buf_get_name(cur_buf)
+						local filetype = vim.api.nvim_buf_get_option(cur_buf, "filetype")
 
-            local is_empty = (cur_name == "" and not is_modified)
-            local is_alpha = (filetype == "alpha" or filetype == "dashboard" or filetype == "starter")
+						local is_empty = (cur_name == "" and not is_modified)
+						local is_alpha = (filetype == "alpha" or filetype == "dashboard" or filetype == "starter")
 
-            if is_empty or is_alpha then
-              vim.cmd("edit " .. fname)
-            else
-              vim.cmd("tab drop " .. fname)
-            end
-          end
-        end
-      end
-    end
+						if is_empty or is_alpha then
+							vim.cmd("edit " .. fname)
+						else
+							vim.cmd("tab drop " .. fname)
+						end
+					end
+				end
+			end
+		end
 
-    local custom_actions = transform_mod({
-      open_trouble_qflist = function()
-        trouble.toggle("quickfix")
-      end,
-    })
+		local custom_actions = transform_mod({
+			open_trouble_qflist = function()
+				trouble.toggle("quickfix")
+			end,
+		})
 
-    telescope.setup({
-      defaults = {
-        preview = { treesitter = false },
-        path_display = { "smart" },
-        mappings = {
-          i = {
-            ["<C-k>"] = actions.move_selection_previous,
-            ["<C-j>"] = actions.move_selection_next,
-            ["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
-            ["<C-t>"] = trouble_telescope.open,
-            ["<CR>"] = select_tab_drop,
-          },
-        },
-      },
-    })
+		telescope.setup({
+			defaults = {
+				preview = { treesitter = false },
+				path_display = { "full" },
+				mappings = {
+					i = {
+						["<C-k>"] = actions.move_selection_previous,
+						["<C-j>"] = actions.move_selection_next,
+						["<C-q>"] = actions.send_selected_to_qflist + custom_actions.open_trouble_qflist,
+						["<C-t>"] = trouble_telescope.open,
+						["<CR>"] = select_tab_drop,
+					},
+				},
+			},
+		})
 
-    telescope.load_extension("fzf")
+		telescope.load_extension("fzf")
 
-    local keymap = vim.keymap
+		local keymap = vim.keymap
 
-    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
-    keymap.set("n", "<leader><leader>", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
-    keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
-    keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
-    keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Grep word under cursor" })
-    keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Todos" })
-    keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
+		keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+		keymap.set("n", "<leader><leader>", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files" })
+		keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent files" })
+		keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Grep word under cursor" })
+		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Todos" })
+		keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
 
-    -- ⭐ .env search
-    keymap.set("n", "<leader>fe", function()
-      require("telescope.builtin").find_files({
-        prompt_title = ".env Files",
-        find_command = {
-          "rg",
-          "--files",
-          "--hidden",
-          "-g",
-          "!.git",
-          "-g",
-          "*.env*",
-        },
-      })
-    end, { desc = "Find .env files" })
-
-  end,
+		-- ⭐ .env search
+		keymap.set("n", "<leader>fe", function()
+			require("telescope.builtin").find_files({
+				prompt_title = ".env Files",
+				find_command = {
+					"rg",
+					"--files",
+					"--hidden",
+					"-g",
+					"!.git",
+					"-g",
+					"*.env*",
+				},
+			})
+		end, { desc = "Find .env files" })
+	end,
 }

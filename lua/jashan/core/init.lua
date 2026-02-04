@@ -7,6 +7,13 @@ vim.diagnostic.config({
 		spacing = 2,
 		prefix = "●", -- could be "■", "▎", "x"
 	},
+	float = {
+		focusable = true,
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
 	signs = true, -- icons in sign column
 	underline = true, -- underline the problem text
 	update_in_insert = false,
@@ -18,10 +25,16 @@ vim.o.updatetime = 250
 vim.api.nvim_create_autocmd("CursorHold", {
 	callback = function()
 		vim.diagnostic.open_float(nil, {
-			focusable = false,
+			focusable = true,
 			border = "rounded",
 			source = "always",
 			prefix = "",
 		})
 	end,
+})
+
+-- Configure hover to be focusable
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	focusable = true,
+	border = "rounded",
 })
