@@ -9,5 +9,6 @@ return {
   },
   keys = {
     { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
+    { "<leader>u", function() Snacks.picker.undo() end, desc = "Undo History" },
   },
 }
