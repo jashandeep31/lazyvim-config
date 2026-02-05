@@ -37,7 +37,7 @@ keymap.set("n", "H", "<cmd>tabp<CR>", { desc = "Go to previous tab" })
 keymap.set("n", "L", "<cmd>tabn<CR>", { desc = "Go to next tab" })
 
 -- oo: insert line below, stay in normal mode
-keymap.set("n", "oo", "o<Esc>k", { noremap = true, silent = true })
+keymap.set("n", "oo", "o<Esc>", { noremap = true, silent = true })
 -- OO: insert line above, stay in normal mode
 keymap.set("n", "OO", "O<Esc>j", { noremap = true, silent = true })
 
