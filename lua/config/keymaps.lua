@@ -13,6 +13,9 @@ keymap.set("n", "oo", "o<Esc>", { noremap = true, silent = true })
 -- OO: insert line above, stay in normal mode
 keymap.set("n", "OO", "O<Esc>j", { noremap = true, silent = true })
 
+-- Disable Shift+J (Join lines)
+vim.keymap.set("n", "J", "<Nop>", { noremap = true, silent = true })
+
 -- to copy the relative path
 keymap.set("n", "<leader>yp", function()
   vim.fn.setreg("+", vim.fn.expand("%:."))
