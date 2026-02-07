@@ -11,3 +11,8 @@ vim.keymap.set("n", "OO", "O<Esc>j", { noremap = true, silent = true })
 
 -- Disable Shift+J (Join lines)
 vim.keymap.set("n", "J", "<Nop>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<leader>yp", function()
+  vim.fn.setreg("+", vim.fn.expand("%:."))
+  vim.notify("Copied relative path 📁")
+end, { desc = "Copy relative file path" })
