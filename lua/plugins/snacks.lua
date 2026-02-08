@@ -8,6 +8,7 @@ return {
     { "<leader>fd", false },
     { "<leader>fg", false },
     { "<leader>fs", false },
+    { "<leader>fe", false },
     {
       "<leader>ee",
       function()
