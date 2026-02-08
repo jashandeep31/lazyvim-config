@@ -16,6 +16,13 @@ return {
       end,
       desc = "Explorer",
     },
+    {
+      "<leader>su",
+      function()
+        Snacks.picker.undo()
+      end,
+      desc = "Undo History",
+    },
   },
   opts = {
     picker = {
