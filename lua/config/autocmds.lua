@@ -6,3 +6,16 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "sh", -- .env files are detected as sh
+  callback = function()
+    if vim.fn.expand("%:t") == ".env" then
+      vim.opt_local.conceallevel = 2
+      vim.opt_local.concealcursor = "n"
+
+      vim.cmd([[
+        syntax match EnvValue /=.*/ conceal cchar=*
+      ]])
+    end
+  end,
+})
