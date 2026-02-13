@@ -3,6 +3,7 @@ return {
   version = "*",
   dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
   keys = {
+    { "<leader>ee", false },
     {
       "<leader>fe",
       function()

@@ -16,6 +16,14 @@ vim.api.nvim_create_autocmd("FileType", {
       vim.cmd([[
         syntax match EnvValue /=.*/ conceal cchar=*
       ]])
+
+      vim.keymap.set("n", "<leader>eh", function()
+        if vim.opt_local.conceallevel:get() == 0 then
+          vim.opt_local.conceallevel = 2
+        else
+          vim.opt_local.conceallevel = 0
+        end
+      end, { buffer = true, desc = "Toggle .env concealment" })
     end
   end,
 })
