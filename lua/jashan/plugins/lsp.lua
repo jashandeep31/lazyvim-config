@@ -2,6 +2,7 @@ return {
   'hrsh7th/cmp-nvim-lsp',
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
+    'hrsh7th/nvim-cmp',
     { 'antosha417/nvim-lsp-file-operations', config = true },
     { 'folke/lazydev.nvim', opts = {} },
   },
@@ -12,8 +13,9 @@ return {
     -- used to enable autocompletion (assign to every lsp server config)
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
-    vim.lsp.config('*', {
-      capabilities = capabilities,
-    })
+    -- vim.lsp.config is likely invalid here. Use lspconfig or mason-lspconfig handlers instead.
+    -- vim.lsp.config('*', {
+    --   capabilities = capabilities,
+    -- })
   end,
 }

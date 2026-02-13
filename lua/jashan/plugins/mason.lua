@@ -31,7 +31,26 @@ return {
         },
       },
       'neovim/nvim-lspconfig',
+      'hrsh7th/cmp-nvim-lsp',
     },
+    config = function(_, opts)
+      -- import mason-lspconfig
+      local mason_lspconfig = require 'mason-lspconfig'
+      
+      -- import cmp-nvim-lsp plugin
+      local cmp_nvim_lsp = require 'cmp_nvim_lsp'
+      local capabilities = cmp_nvim_lsp.default_capabilities()
+      
+      mason_lspconfig.setup(vim.tbl_deep_extend('force', opts, {
+        handlers = {
+          function(server_name)
+            require('lspconfig')[server_name].setup {
+              capabilities = capabilities,
+            }
+          end,
+        },
+      }))
+    end,
   },
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
