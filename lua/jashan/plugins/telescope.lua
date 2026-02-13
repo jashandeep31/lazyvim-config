@@ -56,5 +56,26 @@ return {
 
     -- ❓ Help tags
     keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help Tags' })
+
+    -- ⭐ .env search
+    keymap.set(
+      'n',
+      '<leader>fe',
+      function()
+        require('telescope.builtin').find_files {
+          prompt_title = '.env Files',
+          find_command = {
+            'rg',
+            '--files',
+            '--hidden',
+            '-g',
+            '!.git',
+            '-g',
+            '*.env*',
+          },
+        }
+      end,
+      { desc = 'Find .env files' }
+    )
   end,
 }
