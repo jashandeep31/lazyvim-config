@@ -6,6 +6,24 @@ local keymap = vim.keymap -- for conciseness
 ---------------------
 -- General Keymaps -------------------
 
+-- File-wide single-character find (highlights all matches in current buffer)
+local function find_char_in_file(backward)
+  local ok, char = pcall(vim.fn.getcharstr)
+  if not ok or not char or char == '' or char == '\027' then return end
+
+  local pattern = '\\V' .. vim.fn.escape(char, '\\')
+  vim.fn.setreg('/', pattern)
+  vim.o.hlsearch = true
+
+  local flags = backward and 'b' or ''
+  local found = vim.fn.search(pattern, flags)
+  if found == 0 then vim.notify(("No '%s' found in this file"):format(char), vim.log.levels.INFO) end
+end
+
+keymap.set('n', 'f', function() find_char_in_file(false) end, { desc = 'Find char in file (forward)', silent = true })
+
+keymap.set('n', 'F', function() find_char_in_file(true) end, { desc = 'Find char in file (backward)', silent = true })
+
 -- use jk to exit insert mode
 keymap.set('i', 'jk', '<ESC>', { desc = 'Exit insert mode with jk' })
 keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
