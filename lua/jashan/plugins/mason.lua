@@ -15,6 +15,7 @@ return {
         'prismals',
         'pyright',
         'eslint',
+        'gopls',
       },
     },
     dependencies = {
@@ -62,6 +63,8 @@ return {
         'black', -- python formatter
         'pylint',
         'eslint_d',
+        'gofumpt',
+        'goimports',
       },
     },
     dependencies = {
