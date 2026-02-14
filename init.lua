@@ -177,7 +177,7 @@ require('lazy').setup({
   {
     'NMAC427/guess-indent.nvim',
     opts = {
-      filetype_exclude = { 'netrw', 'tutor', 'go' },
+      -- filetype_exclude = { 'netrw', 'tutor', 'go' },
       on_tab_options = {
         expandtab = false,
         tabstop = 2,
