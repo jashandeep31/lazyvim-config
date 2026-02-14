@@ -15,15 +15,14 @@ return {
 
     local function smart_jump_new_tab(method)
       return function()
-        local params = vim.lsp.util.make_position_params()
+        local client = vim.lsp.get_clients({ bufnr = 0 })[1]
+        local params = vim.lsp.util.make_position_params(0, client and client.offset_encoding or 'utf-8')
         vim.lsp.buf_request(0, method, params, function(err, result, ctx, config)
           if err then
             vim.notify('LSP error: ' .. (err.message or tostring(err)), vim.log.levels.ERROR)
             return
           end
-          if not result or vim.tbl_isempty(result) then
-            return
-          end
+          if not result or vim.tbl_isempty(result) then return end
 
           local client = vim.lsp.get_client_by_id(ctx.client_id)
           local offset_encoding = client and client.offset_encoding or 'utf-8'
@@ -32,18 +31,14 @@ return {
           if vim.islist(result) then
             if #result > 1 then
               local handler = vim.lsp.handlers[method]
-              if handler then
-                handler(err, result, ctx, config)
-              end
+              if handler then handler(err, result, ctx, config) end
               return
             end
             location = result[1]
           end
 
           local uri = location.uri or location.targetUri
-          if not uri then
-            return
-          end
+          if not uri then return end
 
           local fname = vim.uri_to_fname(uri)
           local escaped_fname = vim.fn.fnameescape(fname)
@@ -63,7 +58,7 @@ return {
             vim.cmd('tab drop ' .. escaped_fname)
           end
 
-          vim.lsp.util.jump_to_location(location, offset_encoding)
+          vim.lsp.util.show_document(location, offset_encoding)
         end)
       end
     end
@@ -76,9 +71,9 @@ return {
           vim.keymap.set(mode, keys, func, { buffer = event.buf, silent = true, desc = desc })
         end
 
-        map('gd', smart_jump_new_tab('textDocument/definition'), 'LSP: Smart Go to Definition')
-        map('gD', smart_jump_new_tab('textDocument/declaration'), 'LSP: Smart Go to Declaration')
-        map('gi', smart_jump_new_tab('textDocument/implementation'), 'LSP: Smart Go to Implementation')
+        map('gd', smart_jump_new_tab 'textDocument/definition', 'LSP: Smart Go to Definition')
+        map('gD', smart_jump_new_tab 'textDocument/declaration', 'LSP: Smart Go to Declaration')
+        map('gi', smart_jump_new_tab 'textDocument/implementation', 'LSP: Smart Go to Implementation')
         map('gr', vim.lsp.buf.references, 'LSP: Go to References')
         map('K', vim.lsp.buf.hover, 'LSP: Hover')
         map('<leader>cr', vim.lsp.buf.rename, 'LSP: Rename')

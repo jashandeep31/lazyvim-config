@@ -174,7 +174,18 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   { import = 'jashan.plugins' },
   -- NOTE: Plugins can be added via a link or github org/name. To run setup automatically, use `opts = {}`
-  { 'NMAC427/guess-indent.nvim', opts = {} },
+  {
+    'NMAC427/guess-indent.nvim',
+    opts = {
+      filetype_exclude = { 'netrw', 'tutor', 'go' },
+      on_tab_options = {
+        expandtab = false,
+        tabstop = 2,
+        softtabstop = 2,
+        shiftwidth = 2,
+      },
+    },
+  },
 
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
@@ -641,4 +652,4 @@ require('lazy').setup({
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=2 sts=2 sw=2 etinit
