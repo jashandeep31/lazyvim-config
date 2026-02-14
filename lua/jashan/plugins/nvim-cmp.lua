@@ -24,15 +24,15 @@ return {
     require('luasnip.loaders.from_vscode').lazy_load()
 
     cmp.setup {
+      preselect = cmp.PreselectMode.None,
       completion = {
         completeopt = 'menu,menuone,preview,noselect',
       },
       snippet = { -- configure how nvim-cmp interacts with snippet engine
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
+        expand = function(args) luasnip.lsp_expand(args.body) end,
       },
       mapping = cmp.mapping.preset.insert {
+        ['<C-n>'] = cmp.mapping.select_next_item(), -- next suggestion (and first when none selected)
         ['<C-k>'] = cmp.mapping.select_prev_item(), -- previous suggestion
         ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
