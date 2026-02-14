@@ -52,3 +52,9 @@ keymap.set('n', '[w', function() vim.diagnostic.goto_prev { severity = vim.diagn
 
 -- to get the signature_help
 keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { desc = 'Signature help' })
+
+-- Move lines up and down
+keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
+keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
