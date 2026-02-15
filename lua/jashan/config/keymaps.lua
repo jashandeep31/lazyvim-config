@@ -25,7 +25,6 @@ keymap.set('n', 'f', function() find_char_in_file(false) end, { desc = 'Find cha
 keymap.set('n', 'F', function() find_char_in_file(true) end, { desc = 'Find char in file (backward)', silent = true })
 
 -- use jk to exit insert mode
-keymap.set('i', 'jk', '<ESC>', { desc = 'Exit insert mode with jk' })
 keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
 
 -- clear search highlights
@@ -54,7 +53,7 @@ keymap.set('n', '[w', function() vim.diagnostic.goto_prev { severity = vim.diagn
 keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { desc = 'Signature help' })
 
 -- Move lines up and down
-keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
-keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
-keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+keymap.set('n', '<A-j>', ':m .+1<CR>==', { desc = 'Move line down' })
+keymap.set('n', '<A-k>', ':m .-2<CR>==', { desc = 'Move line up' })
+keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
+keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
