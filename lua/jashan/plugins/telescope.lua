@@ -32,7 +32,7 @@ return {
       },
     }
 
-    telescope.load_extension('fzf')
+    telescope.load_extension 'fzf'
 
     local keymap = vim.keymap
 
@@ -75,6 +75,7 @@ return {
       function()
         require('telescope.builtin').find_files {
           prompt_title = '.env Files',
+          previewer = false,
           find_command = {
             'rg',
             '--files',

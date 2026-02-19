@@ -36,6 +36,13 @@ vim.o.breakindent = true
 -- Save undo history
 vim.o.undofile = true
 
+-- Common indentation defaults for all new buffers.
+-- Language-specific ftplugins can still override these locally.
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.softtabstop = 2
+vim.o.shiftwidth = 2
+
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -174,19 +181,19 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   { import = 'jashan.plugins' },
   -- NOTE: Plugins can be added via a link or github org/name. To run setup automatically, use `opts = {}`
-  {
-    'NMAC427/guess-indent.nvim',
-    opts = {
-      -- filetype_exclude = { 'netrw', 'tutor', 'go' },
-      on_tab_options = {
-        expandtab = false,
-        tabstop = 2,
-        softtabstop = 2,
-        shiftwidth = 2,
-      },
-    },
-  },
-
+  -- {
+  --   'NMAC427/guess-indent.nvim',
+  --   opts = {
+  --     -- filetype_exclude = { 'netrw', 'tutor', 'go' },
+  --     on_tab_options = {
+  --       expandtab = false,
+  --       tabstop = 2,
+  --       softtabstop = 2,
+  --       shiftwidth = 2,
+  --     },
+  --   },
+  -- },
+  --
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
   --    {
