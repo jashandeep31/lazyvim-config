@@ -35,6 +35,7 @@ vim.o.breakindent = true
 
 -- Save undo history
 vim.o.undofile = true
+vim.o.autoread = true
 
 -- Common indentation defaults for all new buffers.
 -- Language-specific ftplugins can still override these locally.
@@ -144,6 +145,23 @@ vim.keymap.set('n', '<C-S-k>', '<C-w>K', { desc = 'Move window to the upper' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+
+local reload_augroup = vim.api.nvim_create_augroup('jashan-auto-reload', { clear = true })
+
+-- Keep buffers fresh when files are changed by external tools (air, go tools, etc.).
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI', 'TermLeave' }, {
+  desc = 'Check if files changed on disk',
+  group = reload_augroup,
+  callback = function()
+    if vim.fn.mode() ~= 'c' then vim.cmd 'silent! checktime' end
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileChangedShellPost', {
+  desc = 'Notify when a file is reloaded from disk',
+  group = reload_augroup,
+  callback = function() vim.notify('File changed on disk. Buffer reloaded.', vim.log.levels.INFO) end,
+})
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode

@@ -27,6 +27,9 @@ keymap.set('n', 'F', function() find_char_in_file(true) end, { desc = 'Find char
 -- use jk to exit insert mode
 keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
 
+-- qq: force-quit current window
+keymap.set('n', 'qq', ':q!<CR>', { noremap = true, silent = true, desc = 'Force quit window' })
+
 -- clear search highlights
 keymap.set('n', '<leader>nh', ':nohl<CR>', { desc = 'Clear search highlights' })
 
@@ -61,3 +64,34 @@ keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 -- Buffer navigation with Shift + h/l
 vim.keymap.set('n', 'H', ':bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', 'L', ':bnext<CR>', { desc = 'Next buffer' })
+
+local function refresh_editor_state()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  if vim.bo[bufnr].buftype == '' then
+    vim.cmd 'silent! checktime'
+    if vim.bo[bufnr].modified then
+      vim.notify('Skipped :edit! because buffer has unsaved changes.', vim.log.levels.WARN)
+    else
+      vim.cmd 'silent! edit!'
+    end
+  end
+
+  local ok = pcall(vim.cmd, 'silent! LspRestart')
+  if not ok then
+    local client_ids = {}
+    for _, client in ipairs(vim.lsp.get_clients { bufnr = bufnr }) do
+      client_ids[#client_ids + 1] = client.id
+    end
+    if #client_ids > 0 then vim.lsp.stop_client(client_ids, true) end
+    vim.defer_fn(function() pcall(vim.cmd, 'silent! LspStart') end, 150)
+  end
+
+  vim.defer_fn(function() vim.cmd 'silent! checktime' end, 200)
+end
+
+vim.api.nvim_create_user_command('RefreshEditor', refresh_editor_state, {
+  desc = 'Reload file from disk and restart LSP for current buffer',
+})
+
+keymap.set('n', '<leader>rr', refresh_editor_state, { desc = 'Reload file + restart LSP' })
