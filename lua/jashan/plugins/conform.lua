@@ -1,6 +1,7 @@
 return {
   'stevearc/conform.nvim',
   opts = function(_, opts)
+    opts.notify_on_error = true
     opts.formatters_by_ft = opts.formatters_by_ft or {}
 
     opts.formatters_by_ft.typescript = { 'prettier' }
@@ -8,6 +9,8 @@ return {
     opts.formatters_by_ft.javascript = { 'prettier' }
     opts.formatters_by_ft.javascriptreact = { 'prettier' }
     opts.formatters_by_ft.json = { 'prettier' }
+    opts.formatters_by_ft.jsonc = { 'prettier' }
+    opts.formatters_by_ft.json5 = { 'prettier' }
     opts.formatters_by_ft.css = { 'prettier' }
     opts.formatters_by_ft.html = { 'prettier' }
     opts.formatters_by_ft.go = { 'goimports', 'gofumpt' }

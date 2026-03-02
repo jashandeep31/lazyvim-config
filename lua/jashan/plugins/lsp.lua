@@ -71,7 +71,7 @@ return {
           vim.keymap.set(mode, keys, func, { buffer = event.buf, silent = true, desc = desc })
         end
 
-        map('gd', smart_jump_new_tab 'textDocument/definition', 'LSP: Smart Go to Definition')
+        map('gd', vim.lsp.buf.definition, 'LSP: Go to Definition')
         map('gD', smart_jump_new_tab 'textDocument/declaration', 'LSP: Smart Go to Declaration')
         map('gi', smart_jump_new_tab 'textDocument/implementation', 'LSP: Smart Go to Implementation')
         map('gr', vim.lsp.buf.references, 'LSP: Go to References')
