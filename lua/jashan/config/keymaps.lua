@@ -65,6 +65,16 @@ keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 vim.keymap.set('n', 'H', ':bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', 'L', ':bnext<CR>', { desc = 'Next buffer' })
 
+-- Buffer/tab actions (bufferline)
+keymap.set('n', '<leader>tn', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer tab' })
+keymap.set('n', '<leader>tN', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Previous buffer tab' })
+keymap.set('n', '<leader>tp', '<cmd>BufferLinePick<CR>', { desc = 'Pick buffer tab' })
+keymap.set('n', '<leader>tc', '<cmd>BufferLinePickClose<CR>', { desc = 'Pick buffer tab to close' })
+keymap.set('n', '<leader>tx', '<cmd>bdelete<CR>', { desc = 'Close current buffer tab' })
+keymap.set('n', '<leader>to', '<cmd>BufferLineCloseOthers<CR>', { desc = 'Close other buffer tabs' })
+keymap.set('n', '<leader>tl', '<cmd>BufferLineCloseLeft<CR>', { desc = 'Close buffer tabs to the left' })
+keymap.set('n', '<leader>tr', '<cmd>BufferLineCloseRight<CR>', { desc = 'Close buffer tabs to the right' })
+
 local function refresh_editor_state()
   local bufnr = vim.api.nvim_get_current_buf()
 
