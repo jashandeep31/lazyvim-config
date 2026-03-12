@@ -61,6 +61,13 @@ return {
 
     -- 📂 Buffers list
     keymap.set('n', '<leader>bb', builtin.buffers, { desc = 'Find Buffers' })
+    keymap.set('n', '<leader>,', function()
+      builtin.buffers(require('telescope.themes').get_dropdown {
+        previewer = false,
+        sort_lastused = true,
+        ignore_current_buffer = true,
+      })
+    end, { desc = 'Search Open Buffers' })
 
     -- 🌳 Git files
     keymap.set('n', '<leader>fg', builtin.git_files, { desc = 'Git Files' })

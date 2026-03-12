@@ -26,6 +26,7 @@ keymap.set('n', 'F', function() find_char_in_file(true) end, { desc = 'Find char
 
 -- use jk to exit insert mode
 keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
+-- keymap.set('i', 'jk', '<ESC>', { desc = 'Exit insert mode with jk' })
 
 -- qq: force-quit current window
 keymap.set('n', 'qq', ':q!<CR>', { noremap = true, silent = true, desc = 'Force quit window' })
@@ -64,6 +65,43 @@ keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 -- Buffer navigation with Shift + h/l
 vim.keymap.set('n', 'H', ':bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', 'L', ':bnext<CR>', { desc = 'Next buffer' })
+
+local function toggle_window_maximize()
+  if vim.fn.winnr '$' == 1 then
+    vim.notify('Only one window is open.', vim.log.levels.INFO)
+    return
+  end
+
+  local current_win = vim.api.nvim_get_current_win()
+  local tab_restore = vim.t.window_maximize_restore
+  local tab_win = vim.t.window_maximize_win
+
+  if tab_restore and tab_win and not vim.api.nvim_win_is_valid(tab_win) then
+    vim.t.window_maximize_restore = nil
+    vim.t.window_maximize_win = nil
+    tab_restore = nil
+    tab_win = nil
+  end
+
+  if tab_restore and tab_win == current_win and vim.api.nvim_win_is_valid(current_win) then
+    vim.cmd(tab_restore)
+    vim.t.window_maximize_restore = nil
+    vim.t.window_maximize_win = nil
+    return
+  end
+
+  if tab_restore then vim.cmd(tab_restore) end
+
+  vim.t.window_maximize_restore = vim.fn.winrestcmd()
+  vim.t.window_maximize_win = current_win
+  vim.cmd 'wincmd |'
+  vim.cmd 'wincmd _'
+end
+
+-- Split the current buffer into another window
+keymap.set('n', '<leader>sh', '<cmd>split<CR>', { desc = 'Split current buffer horizontally' })
+keymap.set('n', '<leader>sv', '<cmd>vsplit<CR>', { desc = 'Split current buffer vertically' })
+keymap.set('n', '<leader>sw', toggle_window_maximize, { desc = 'Toggle maximize current window' })
 
 -- Buffer/tab actions (bufferline)
 keymap.set('n', '<leader>tn', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer tab' })
