@@ -198,6 +198,7 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   { import = 'jashan.plugins' },
+  { 'folke/ts-comments.nvim', opts = {}, event = 'VeryLazy' },
   -- NOTE: Plugins can be added via a link or github org/name. To run setup automatically, use `opts = {}`
   -- {
   --   'NMAC427/guess-indent.nvim',
@@ -619,11 +620,23 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local filetypes = {
+        'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown',
+        'markdown_inline', 'query', 'vim', 'vimdoc',
+        'javascript', 'typescript', 'tsx', 'css',
+        'go', 'gomod', 'gosum', 'gowork',
+        'json', 'yaml'
+      }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = filetypes,
-        callback = function() vim.treesitter.start() end,
+        callback = function(args)
+          local buf = args.buf
+          local filetype = args.match
+          local lang = vim.treesitter.language.get_lang(filetype)
+          if lang and vim.treesitter.language.add(lang) then
+            vim.treesitter.start(buf, lang)
+          end
+        end,
       })
     end,
   },
