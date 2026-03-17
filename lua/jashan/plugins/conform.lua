@@ -14,7 +14,15 @@ return {
     opts.formatters_by_ft.css = { 'prettier' }
     opts.formatters_by_ft.html = { 'prettier' }
     opts.formatters_by_ft.go = { 'goimports', 'gofumpt' }
+    opts.formatters_by_ft.c = { 'clang_format' }
 
+    -- 🔥 THIS is the key fix
+    opts.format_on_save = function(bufnr)
+      return {
+        timeout_ms = 500,
+        lsp_format = 'fallback',
+      }
+    end
     return opts
   end,
 }

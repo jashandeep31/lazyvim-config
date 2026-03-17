@@ -1,22 +1,6 @@
 return {
   {
     'williamboman/mason-lspconfig.nvim',
-    opts = {
-      -- list of servers for mason to install
-      ensure_installed = {
-        'ts_ls',
-        'html',
-        'cssls',
-        'tailwindcss',
-        'lua_ls',
-        'emmet_ls',
-        'eslint_d',
-        'prismals',
-        'pyright',
-        'eslint',
-        'gopls',
-      },
-    },
     dependencies = {
       {
         'williamboman/mason.nvim',
@@ -33,41 +17,72 @@ return {
       'neovim/nvim-lspconfig',
       'hrsh7th/cmp-nvim-lsp',
     },
-    config = function(_, opts)
-      -- import mason-lspconfig
-      local mason_lspconfig = require 'mason-lspconfig'
+    opts = {
+      ensure_installed = {
+        -- Web
+        'ts_ls',
+        'html',
+        'cssls',
+        'tailwindcss',
+        'emmet_ls',
 
-      -- import cmp-nvim-lsp plugin
-      local cmp_nvim_lsp = require 'cmp_nvim_lsp'
+        -- Lua
+        'lua_ls',
+
+        -- Backend / Others
+        'prismals',
+        'pyright',
+        'eslint',
+        'gopls',
+
+        -- C/C++
+        'clangd',
+      },
+    },
+    config = function(_, opts)
+      local mason_lspconfig = require('mason-lspconfig')
+      local lspconfig = require('lspconfig')
+      local cmp_nvim_lsp = require('cmp_nvim_lsp')
+
       local capabilities = cmp_nvim_lsp.default_capabilities()
 
       mason_lspconfig.setup(vim.tbl_deep_extend('force', opts, {
         handlers = {
           function(server_name)
-            require('lspconfig')[server_name].setup {
+            lspconfig[server_name].setup({
               capabilities = capabilities,
-            }
+            })
           end,
         },
       }))
     end,
   },
+
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    opts = {
-      ensure_installed = {
-        'prettier', -- prettier formatter
-        'stylua', -- lua formatter
-        'isort', -- python formatter
-        'black', -- python formatter
-        'pylint',
-        'eslint_d',
-        'gofumpt',
-        'goimports',
-      },
-    },
     dependencies = {
       'williamboman/mason.nvim',
+    },
+    opts = {
+      ensure_installed = {
+        -- Formatters
+        'prettier',
+        'stylua',
+        'isort',
+        'black',
+
+        -- Linters
+        'pylint',
+        'eslint_d',
+
+        -- Go tools
+        'gofumpt',
+        'goimports',
+
+        -- C/C++
+        'clang-format',
+        'codelldb',
+      },
     },
   },
 }
