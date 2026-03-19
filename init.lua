@@ -273,7 +273,7 @@ require('lazy').setup({
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
-      { 'j-hui/fidget.nvim', opts = {} },
+      -- { 'j-hui/fidget.nvim', opts = {} },
 
       -- Allows extra capabilities provided by blink.cmp
       'saghen/blink.cmp',
@@ -607,11 +607,27 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     config = function()
       local filetypes = {
-        'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown',
-        'markdown_inline', 'query', 'vim', 'vimdoc',
-        'javascript', 'typescript', 'tsx', 'css',
-        'go', 'gomod', 'gosum', 'gowork',
-        'json', 'yaml'
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'javascript',
+        'typescript',
+        'tsx',
+        'css',
+        'go',
+        'gomod',
+        'gosum',
+        'gowork',
+        'json',
+        'yaml',
       }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
@@ -619,9 +635,7 @@ require('lazy').setup({
           local buf = args.buf
           local filetype = args.match
           local lang = vim.treesitter.language.get_lang(filetype)
-          if lang and vim.treesitter.language.add(lang) then
-            vim.treesitter.start(buf, lang)
-          end
+          if lang and vim.treesitter.language.add(lang) then vim.treesitter.start(buf, lang) end
         end,
       })
     end,
