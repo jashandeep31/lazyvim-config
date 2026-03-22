@@ -111,7 +111,7 @@ keymap.set('n', '<leader>tc', '<cmd>BufferLinePickClose<CR>', { desc = 'Pick buf
 keymap.set('n', '<leader>to', '<cmd>BufferLineCloseOthers<CR>', { desc = 'Close other buffer tabs' })
 keymap.set('n', '<leader>tl', '<cmd>BufferLineCloseLeft<CR>', { desc = 'Close buffer tabs to the left' })
 keymap.set('n', '<leader>tr', '<cmd>BufferLineCloseRight<CR>', { desc = 'Close buffer tabs to the right' })
-keymap.set('n', '<leader>tx', function() require('mini.bufremove').delete(0, false) end, { desc = 'Close current buffer tab' })
+-- keymap.set('n', '<leader>tx', function() require('mini.bufremove').delete(0, false) end, { desc = 'Close current buffer tab' }) -- MOVED TO snacks.lua
 local function refresh_editor_state()
   local bufnr = vim.api.nvim_get_current_buf()
 
