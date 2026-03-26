@@ -20,6 +20,9 @@ local function find_char_in_file(backward)
   if found == 0 then vim.notify(("No '%s' found in this file"):format(char), vim.log.levels.INFO) end
 end
 
+keymap.set('n', '<leader>td', '<cmd>TodoQuickFix<cr>', { desc = 'All TODOs (Quickfix)' })
+keymap.set('n', '<leader>tt', '<cmd>TodoTelescope<cr>', { desc = 'All TODOs (Telescope)' })
+
 keymap.set('n', 'f', function() find_char_in_file(false) end, { desc = 'Find char in file (forward)', silent = true })
 
 keymap.set('n', 'F', function() find_char_in_file(true) end, { desc = 'Find char in file (backward)', silent = true })
