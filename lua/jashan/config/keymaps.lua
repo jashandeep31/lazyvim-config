@@ -1,6 +1,5 @@
 -- set leader key to space
 vim.g.mapleader = ' '
-
 local keymap = vim.keymap -- for conciseness
 
 ---------------------
@@ -30,6 +29,7 @@ keymap.set('n', 'F', function() find_char_in_file(true) end, { desc = 'Find char
 -- use jk to exit insert mode
 keymap.set('i', 'jj', '', { desc = 'Exit insert mode with jk' })
 keymap.set('i', 'jk', '<ESC>', { desc = 'Exit insert mode with jk' })
+keymap.set('n', 'J', '<ESC>', { desc = 'Exit insert mode with jk' })
 
 -- qq: force-quit current window
 keymap.set('n', 'qq', ':q!<CR>', { noremap = true, silent = true, desc = 'Force quit window' })

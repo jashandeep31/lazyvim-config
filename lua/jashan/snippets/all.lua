@@ -4,9 +4,9 @@ local t = ls.text_node
 local i = ls.insert_node
 
 return {
-  s('sepcom', {
-    t '// ====== ',
+  s('scom', {
+    t '// --- ',
     i(1, 'Section Title'),
-    t ' ======',
+    t ' ---',
   }),
 }
