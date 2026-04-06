@@ -17,7 +17,7 @@ return {
       filesystem = {
         filtered_items = {
           hide_dotfiles = false,
-          hide_gitignored = false,
+          hide_gitignored = true,
         },
         follow_current_file = {
           enabled = true,
@@ -28,6 +28,10 @@ return {
       window = {
         position = 'right',
         width = 30,
+        mappings = {
+          ['W'] = 'close_all_nodes',
+          ['H'] = 'toggle_hidden', -- already toggles dotfiles
+        },
       },
     }
 

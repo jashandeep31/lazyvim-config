@@ -47,6 +47,23 @@ return {
         map('n', '<leader>hB', gitsigns.blame, { desc = 'git [B]lame buffer' })
         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
         map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
+        map('n', '<leader>hc', function()
+          require('telescope.builtin').git_bcommits({
+            attach_mappings = function(prompt_bufnr, _)
+              local actions = require('telescope.actions')
+              local action_state = require('telescope.actions.state')
+
+              actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                if selection then
+                  gitsigns.diffthis(selection.value)
+                end
+              end)
+              return true
+            end
+          })
+        end, { desc = 'git [c]ompare against history' })
         -- Toggles
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
         map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
