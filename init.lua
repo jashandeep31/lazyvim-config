@@ -4,6 +4,12 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.filetype.add {
+  extension = {
+    prisma = 'prisma',
+  },
+}
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
@@ -16,7 +22,7 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -627,6 +633,7 @@ require('lazy').setup({
         'gosum',
         'gowork',
         'json',
+        'prisma',
         'yaml',
       }
       require('nvim-treesitter').install(filetypes)
