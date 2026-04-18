@@ -13,6 +13,7 @@ return {
       popup_border_style = 'rounded',
       enable_git_status = true,
       enable_diagnostics = true,
+      use_popups_for_input = false, -- Uses the default command line for input (enabling path completion)
 
       filesystem = {
         filtered_items = {
